@@ -1,26 +1,15 @@
 package com.tricentis.demowebshop.tests;
-import com.codeborne.selenide.Configuration;
-import io.restassured.RestAssured;
-import org.junit.jupiter.api.BeforeAll;
+import com.tricentis.demowebshop.base.TestBase;
 import org.openqa.selenium.Cookie;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.is;
 
-public class WishlistTests {
-
-    @BeforeAll
-    static void configureBaseUrl() {
-        RestAssured.baseURI = "http://demowebshop.tricentis.com";
-        Configuration.baseUrl = "http://demowebshop.tricentis.com";
-    }
-
+public class WishlistTests extends TestBase {
     //Добавить в список желаний позицию (API) + Проверить что в списке желаний 1 товар (UI)
     @Test
     void addItemToWishlist() {
@@ -47,17 +36,5 @@ public class WishlistTests {
             $(".wishlist-qty").shouldHave(text("(1)")));
     }
 
-    // проголосовать в опросе для коммьюнити анонимом (API)
-    @Test
-    void errorInPoolAnonimus(){
-        given()
-                .contentType("application/x-www-form-urlencoded; charset=UTF-8")
-                .body("pollAnswerId=2")
-                .when()
-                .post("/poll/vote")
-                .then()
-                .log().all()
-                .statusCode(200)
-                .body("error", is("Only registered users can vote."));
-    }
+
 }
